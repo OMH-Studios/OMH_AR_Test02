@@ -1,64 +1,20 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>OMH Estudio AR - Debug</title>
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
-    
-    <style>
-        body { margin: 0; overflow: hidden; background-color: #000; }
-        #debug-ui {
-            position: absolute; bottom: 10px; left: 10px; z-index: 1000;
-            background: rgba(0,0,0,0.8); color: #0f0; padding: 10px;
-            font-family: monospace; font-size: 12px; pointer-events: none;
-        }
-    </style>
-</head>
-<body>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  </head>
+  <body>
+    <a-scene mindar-image="imageTargetSrc: ./tu-archivo.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <div id="debug-ui">Esperando sistema...</div>
-
-    <a-scene 
-        mindar-image="imageTargetSrc: ./targets.mind; filterMinCF: 0.1; filterBeta: 10; uiScanning: yes;" 
-        color-space="sRGB" 
-        renderer="colorManagement: true, physicallyCorrectLights" 
-        vr-mode-ui="enabled: false" 
-        device-orientation-permission-ui="enabled: false">
-        
-        <a-assets>
-            <a-asset-item id="modeloCasa" src="./modelo.glb"></a-asset-item>
-        </a-assets>
-
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-        <a-entity id="target-casa" mindar-image-target="targetIndex: 0">
-            <a-gltf-model 
-                id="casa-visual"
-                src="#modeloCasa" 
-                rotation="0 0 0" 
-                position="0 0 0" 
-                scale="0.5 0.5 0.5">
-            </a-gltf-model>
-        </a-entity>
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-gltf-model src="./modelo_casa.glb" 
+                      rotation="0 0 0" 
+                      position="0 0 0" 
+                      scale="0.1 0.1 0.1">
+        </a-gltf-model>
+      </a-entity>
     </a-scene>
-
-    <script>
-        const debug = document.getElementById('debug-ui');
-        const targetEntity = document.querySelector('#target-casa');
-
-        // Verificar si los scripts cargaron
-        window.onload = () => { debug.innerText = "Librerías cargadas. Apunta al marcador."; };
-
-        targetEntity.addEventListener("targetFound", event => {
-            debug.innerText = "🎯 ¡TARGET DETECTADO!";
-            debug.style.color = "#ffff00";
-        });
-
-        targetEntity.addEventListener("targetLost", event => {
-            debug.innerText = "❌ Target perdido. Busca el marcador.";
-            debug.style.color = "#ff0000";
-        });
-    </script>
-</body>
+  </body>
 </html>
